@@ -90,6 +90,7 @@ export default {
     };
   },
   created() {
+    this.$store.commit("ctrlLoader", true);
     // 获得图片验证码
     this.getImageCode();
   },
@@ -104,6 +105,7 @@ export default {
         .get("/v1/getImageCode/" + vm.phoneCode.imgId)
         .then(function(response) {
           vm.phoneCode.imgUrl = "data:image/png;base64," + response.data.result;
+          vm.$store.commit("ctrlLoader", false);
         })
         .catch(function(error) {
           vm.$toast("请求超时，请稍后再试！");
@@ -189,6 +191,7 @@ export default {
 
             // 跳转到首页
             vm.$router.push(vm.$init.channel.indexUrl);
+            vm.$store.commit("ctrlLoader", false);
           } else {
             vm.$toast(response.data.msg);
           }

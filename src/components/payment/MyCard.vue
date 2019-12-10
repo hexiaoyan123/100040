@@ -122,6 +122,7 @@ export default {
     };
   },
   created() {
+    this.$store.commit("ctrlLoader", true);
     this.pageUserVoucher();
   },
   methods: {
@@ -147,6 +148,7 @@ export default {
         .then(function(response) {
           if (response.data.code == "1000") {
             vm.list = response.data.result;
+            vm.$store.commit("ctrlLoader", false);
           } else {
             vm.$toast(response.data.msg);
           }

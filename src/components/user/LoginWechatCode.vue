@@ -18,12 +18,14 @@ export default {
     return {};
   },
   created() {
+    this.$store.commit("ctrlLoader", true);
     // 微信登录
     this.wechatLogin();
   },
   methods: {
     // 微信登录
     wechatLogin() {
+      this.$store.commit("ctrlLoader", false);
       let redirectUrl = encodeURIComponent(
         this.$init.channel.itemUrl + this.$init.channel.indexUrl
       );
