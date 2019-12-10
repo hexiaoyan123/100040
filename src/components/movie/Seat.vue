@@ -62,7 +62,7 @@
           <!-- 中心线 -->
           <!-- <div class="seats-wrapper-center-line"></div> -->
 
-          <div class="seats-screen">
+          <div class="seats-screen" :style="{'zoom': zoom}">
             <div
               class="seats-screen-in"
               :style="{'margin-left': marginLeft+'px'}"
@@ -206,8 +206,8 @@ export default {
   data() {
     return {
       // 缩放事件
-      zoom: 1,
-      minZoom: 1, // 最小缩放
+      zoom: 0.8,
+      minZoom: 0.7, // 最小缩放
       lastZoom: 1,
       borTop: 0, // 向上便宜距离
       // 影院
@@ -268,22 +268,6 @@ export default {
         .then(function(response) {
           if (response.data.code == "1000" && response.data.result) {
             vm.dynamicSeatList = response.data.result;
-            //console.log(JSON.stringify(vm.dynamicSeatList));
-            // let arr = vm.dynamicSeatList[0].seatList.reverse();
-            // let newArr = [];
-            // let tempArr = [];
-            // let newArr1 = [];
-            // for (let i = 0; i < arr.length; i++) {
-            //   newArr = arr.filter(item => item.row === i.toString());
-            //   if (newArr.length != 0) {
-            //     tempArr.push(newArr);
-            //   }
-            // }
-            // newArr1 = [].concat.apply([], tempArr);
-            // let copyDynamicSeatList = vm.dynamicSeatList;
-            // copyDynamicSeatList[0].seatList = newArr1;
-            //console.log(JSON.stringify(copyDynamicSeatList));
-
             // 行号
             vm.dynamicSeatList.forEach((e, i) => {
               e.rowList.forEach((v, j) => {
@@ -300,13 +284,23 @@ export default {
                 tempArr.push(newArr);
               }
             }
-            //console.log(JSON.stringify(tempArr[0].length * 30)); //拿到第一行的数量
+            //console.log(JSON.stringify(tempArr[0].length * 30)); //拿到第一行的数量计算中心距离
             let sumWidth = (tempArr[0].length * 30) / 2;
             let outWidth = document.querySelector(".seats-screen-in")
               .offsetWidth;
             let marginwidth = sumWidth - outWidth / 2;
-            // outWidth.style.marginLeft = "marginwidth+'px'";
+            // outWidth.style.marginLeft = "marginwidth+'px'"; marginLeft是中间的小屏幕和左边的距离 是用（总宽度减去中间小提示的宽度）除2
             vm.marginLeft = marginwidth;
+            // //缩放 到可视区域
+
+            let sumWidth1 = tempArr[0].length * 30;
+            let sunDivWidth = document.querySelector(".seats-wrapper-out")
+              .offsetWidth;
+            if (sumWidth1 <= 400) {
+              vm.zoom = 0.9;
+            } else {
+              vm.zoom = sunDivWidth / sumWidth1;
+            }
           } else {
             vm.noSeatList = true;
           }
@@ -315,7 +309,6 @@ export default {
           vm.$toast("请求超时，请稍后再试！");
         });
     },
-
     // 选择座位
     clickSeat(value, val, action) {
       //console.info(JSON.stringify(val));
@@ -449,15 +442,16 @@ export default {
     },
     // 缩放事件
     pinch(e) {
-      if (e.zoom == 1) {
+      if (e.zoom == 0.8) {
+        alert(2);
         this.lastZoom = this.zoom;
       }
       let zoomNum = e.zoom * this.lastZoom;
 
       if (zoomNum < this.minZoom) {
         zoomNum = this.minZoom;
-      } else if (zoomNum > 3) {
-        zoomNum = 3;
+      } else if (zoomNum > 2) {
+        zoomNum = 2;
       }
       this.zoom = zoomNum;
     },
@@ -903,7 +897,7 @@ header .iconfont {
   position: absolute;
   z-index: 10;
   width: 4.6%;
-  top: 150px;
+  top: 140px;
   left: 10px;
   background-color: #cacaca;
   border-radius: 20px;
