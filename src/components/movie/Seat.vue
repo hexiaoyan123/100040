@@ -65,7 +65,7 @@
           <div class="seats-screen" :style="{'zoom': zoom}">
             <div
               class="seats-screen-in"
-              :style="{'margin-left': marginLeft+'px'}"
+              :style="{'margin-left': marginLeft+'px','zoom': zoom}"
             >{{show.hallName}}荧幕</div>
           </div>
           <!-- <div style="height: 75px;">
@@ -180,7 +180,7 @@
           温馨提示
           <i class="iocn-close" @click="phoneForm = false"></i>
         </p>
-        <p>请认真确认手机号，此手机号用于接收电影取票码。</p>
+        <p>为了便于查询，请填写您的订票手机号码。</p>
         <form class="search-block" action="javascript:void 0">
           <input
             class="bind-phone-input"
@@ -292,12 +292,13 @@ export default {
             // outWidth.style.marginLeft = "marginwidth+'px'"; marginLeft是中间的小屏幕和左边的距离 是用（总宽度减去中间小提示的宽度）除2
             vm.marginLeft = marginwidth;
             // //缩放 到可视区域
-
-            let sumWidth1 = tempArr[0].length * 30;
+            let sumWidth1 = tempArr[0].length * 31;
             let sunDivWidth = document.querySelector(".seats-wrapper-out")
               .offsetWidth;
             if (sumWidth1 <= 400) {
               vm.zoom = 0.9;
+            } else if (sumWidth1 >= 1200) {
+              vm.zoom = 0.4;
             } else {
               vm.zoom = sunDivWidth / sumWidth1;
             }
@@ -443,15 +444,13 @@ export default {
     // 缩放事件
     pinch(e) {
       if (e.zoom == 0.8) {
-        alert(2);
         this.lastZoom = this.zoom;
       }
       let zoomNum = e.zoom * this.lastZoom;
-
       if (zoomNum < this.minZoom) {
         zoomNum = this.minZoom;
-      } else if (zoomNum > 2) {
-        zoomNum = 2;
+      } else if (zoomNum > 1.5) {
+        zoomNum = 1.5;
       }
       this.zoom = zoomNum;
     },
@@ -674,31 +673,31 @@ header .iconfont {
 
 .seat-0 {
   background: url(../../assets/movie/setas-o.png);
-  background-color: #ffffff;
+  background-color: #f7f7f7;
   background-size: 100% 100%;
 }
 
 .seat-1 {
   background: url(../../assets/movie/setas-o.png);
-  background-color: #ffffff;
+  background-color: #f7f7f7;
   background-size: 100% 100%;
 }
 
 .seat-2 {
   background: url(../../assets/movie/setas-on.png);
-  background-color: #ffffff;
+  background-color: #f7f7f7;
   background-size: 100% 100%;
 }
 
 .seat-3 {
   background: url(../../assets/movie/setas-un.png);
-  background-color: #ffffff;
+  background-color: #f7f7f7;
   background-size: 100% 100%;
 }
 
 .seat-4 {
   background: url(../../assets/movie/seats-love.png);
-  background-color: #ffffff;
+  background-color: #f7f7f7;
   background-size: 100% 100%;
 }
 
