@@ -121,6 +121,7 @@ export default {
     } else {
       this.getCity(this.$init.channel.defaultCity);
     }
+    this.$store.commit("ctrlLoader", true);
   },
   methods: {
     // 返回上一页
@@ -157,8 +158,8 @@ export default {
           if (response.data.code == "1000") {
             if (response.data.result) {
               vm.showCinemaList = response.data.result;
-
-              // 场次日期
+              vm.$store.commit("ctrlLoader", false);
+              // 场次日期 
               let i = 0;
               for (let key in vm.showCinemaList) {
                 vm.showDateList[i] = key;
