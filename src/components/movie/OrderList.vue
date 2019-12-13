@@ -50,6 +50,7 @@ export default {
       }
     };
   },
+
   created() {
     this.getOrder(true);
   },
@@ -60,20 +61,17 @@ export default {
     },
 
     // 瀑布流加载数据
-    fallsOnLoad() {
-      this.getOrder();
-    },
-
+    fallsOnLoad() {},
     // 获取订单列表
     getOrder(clear) {
       // 页码处理
-      if (clear) {
-        this.list = [];
-        this.pageNum = 1;
-        this.falls.finished = false;
-      } else {
-        this.pageNum += 1;
-      }
+      // if (clear) {
+      //   this.list = [];
+      //   this.pageNum = 1;
+      //   this.falls.finished = false;
+      // } else {
+      //   this.pageNum += 1;
+      // }
 
       let vm = this;
       vm.$http
@@ -85,17 +83,15 @@ export default {
         // )
         .get(
           "/panda-cinema-api/v2/pageOrder/" +
-            1 +
-            "/1000?dataStatus=" +
+            this.pageNum +
+            "/100?dataStatus=" +
             this.dataStatu
         )
         .then(function(response) {
           if (response.data.code == "1000") {
             if (response.data.result && response.data.result.length > 0) {
               vm.list = response.data.result;
-              vm.$nextTick(() => {
-                vm.falls.loading = false;
-              });
+              vm.falls.loading = false;
             } else {
               vm.falls.loading = false;
               vm.falls.finished = true;

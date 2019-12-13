@@ -311,6 +311,7 @@ header .iconfont {
   border: 1px solid #eee;
   overflow: hidden;
   position: relative;
+  background-color: #eee;
 }
 
 .move-item-img img {
